@@ -1,0 +1,61 @@
+.container {
+    position: relative;
+    margin-bottom: 2.5em;
+    padding-bottom: .8rem;
+}
+
+.container::before {
+    content: "";
+
+    position: absolute;
+    left: -.15rem;
+    bottom: 0;
+
+    display: block;
+    width: calc(100% + .3rem);
+    height: .3rem;
+
+    background: #000;
+    border-radius: .15rem;
+}
+
+.link {
+    display: block;
+    
+    color: inherit;
+    text-decoration: inherit;
+
+    transition: .2s
+}
+
+.link:hover,
+.link:focus {
+    color: #0d6efd;
+}
+
+.name,
+.description {
+    margin: 0;
+}
+
+.description {
+    margin-bottom: 1em;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.footer {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-self: center;
+
+    width: 100%;
+}
+
+.category {
+    font-weight: bold;
+}

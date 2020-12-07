@@ -1,0 +1,27 @@
+.container {
+    position: fixed;
+    bottom: 0;
+    left:0;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+
+    width: 100%;
+    padding: 4rem 4rem 2rem;
+
+    background: linear-gradient(0deg, #fff 0%, #fff calc(100% - 4rem), transparent 100%);
+
+    z-index: 99;
+}
+
+.container > a,
+.container > button {
+    display: block;
+}
+
+.container > a:not(:first-child),
+.container > button:not(:first-child) {
+    margin-left: 2em;
+}

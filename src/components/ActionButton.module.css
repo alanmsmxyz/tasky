@@ -1,0 +1,25 @@
+.container {
+    display: inline-block;
+    text-align: center;
+}
+
+.icon {
+    display: inline-flex;
+
+    width: 3em;
+    height: 3em;
+
+    border: .3rem solid #000;
+    border-radius: 50%;
+}
+
+.icon img {
+    display: block;
+
+    width: 60%;
+    height: auto;
+}
+
+.legend {
+    font-size: .8em;
+}
