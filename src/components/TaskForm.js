@@ -58,8 +58,9 @@ const TaskForm = ( props ) => {
     const categoryRadios = props.categoryList.map( cat =>
         <div className={style.radio} key={cat.id}>
             <input id={`cat-${cat.id}`} type="radio" name="category" value={cat.id} checked={category === cat.id} onChange={onChange} required />
-            <label htmlFor={`cat-${cat.id}`} style={{ 'borderColor': cat.color }}>
-                <big>{cat.name}</big>
+            <label htmlFor={`cat-${cat.id}`}>
+                <big className={style.radioText}>{cat.name}</big>
+                <span className={style.radioColor} style={{backgroundColor: cat.color}}></span>
             </label>
         </div> )
 

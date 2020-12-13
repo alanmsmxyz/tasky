@@ -35,17 +35,26 @@
     display: block;
     width: 60%;
     height: .4rem;
-    border-radius: .2rem;
+    border-radius: .4rem;
 
     margin: 0 0 .8rem auto;
 
-    background: #000;
+    background: #3d1f61;
+
+    transition: .2s ease-out;
+}
+
+.stairs:hover .bar,
+.stairs:focus .bar {
+    width: 100%;
+    margin-left: 0;
+}
+
+.bar:nth-child(1),
+.bar:nth-child(3) {
+    margin-left: 40%;
 }
 
 .bar:nth-child(2) {
     margin-left: 20%;
-}
-
-.bar:nth-child(3) {
-    margin-left: 40%;
 }

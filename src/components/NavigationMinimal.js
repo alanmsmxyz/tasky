@@ -8,8 +8,8 @@ const NavigationMinimal = ( props ) => {
         <div className={style.container}>
             <div className={style.inner}>
                 <div>
-                    <Link to="/">
-                        <img className={style.back} src="/icons/circle-left.svg" alt="back icon"/>
+                    <Link to="/" className={style.back}>
+                        <img src="/icons/chevron-left.svg" alt="back icon"/>
                     </Link>
                 </div>
 

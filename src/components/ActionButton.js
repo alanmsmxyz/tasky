@@ -5,7 +5,7 @@ import style from './ActionButton.module.css'
 const ActionButton = ( props ) => {
     return (
         <div className={style.container}>
-            <div className={`${style.icon} inline-flex-center`}>
+            <div className={`${style.icon}`}>
                 <img src={props.icon} alt={props.legend} />
             </div>
             <div className={style.legend}>

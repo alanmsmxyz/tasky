@@ -18,7 +18,7 @@
 .field textarea {
     display: block;
     width: 100%;
-    padding: .3rem 0;
+    padding: .2em 0;
 
     background: #fff;
     border: 0;
@@ -31,8 +31,10 @@
     transition: .2s ease-out;
 }
 
+.field input:hover,
 .field input:focus,
 .field input:valid,
+.field textarea:hover,
 .field textarea:focus,
 .field textarea:valid {
     border-bottom-color: #2f3542;
@@ -64,17 +66,45 @@
 }
 
 .radio label {
-    padding-bottom: .1em;
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: center;
+
+    height: 4rem;
+    padding: 0 1em;
+    
+    border-radius: .4rem;
+    border: .2rem solid #a4b0be;
 
     transition: .2s ease-out;
 }
 
+.radio label:hover {
+    cursor: pointer;
+}
+
+.radio label:hover,
+.radio label:focus,
 .radio input:checked + label {
-    border-bottom: .3rem solid #2f3542;
+    border-color: #2f3542;
 }
 
 .radio:not(:last-child) {
-    margin-right: 2em;
+    margin-right: 1.5em;
+}
+
+.radioText {
+    /* visual correction */
+    position: relative;
+    top: .1em;
+}
+
+.radioColor {
+    height: .6em;
+    width: .6em;
+    margin-left: .5em;
+
+    border-radius: .4rem;
 }
 
 input[type=color] {
@@ -82,10 +112,10 @@ input[type=color] {
 
     width: 4em;
     height: 2em;
-    padding: .2rem .4rem;
+    padding: .2em .4em;
     
     border: 0;
-    border-radius: .5rem;
+    border-radius: .4rem;
     background-color: #dfe4ea;
     appearance: none;
 }
