@@ -12,9 +12,6 @@
 .fieldset legend {
     padding: 0;
     margin: 0;
-    
-    font-size: .8em;
-    font-weight: bold;
 }
 
 .field input,
@@ -23,12 +20,22 @@
     width: 100%;
     padding: .3rem 0;
 
+    background: #fff;
+    border: 0;
+    border-bottom: .2rem solid #a4b0be;
+    outline: 0;
+    
     font-family: inherit;
     font-size: 1em;
 
-    border: 0;
-    border-bottom: .2rem solid #000;
-    outline: 0;
+    transition: .2s ease-out;
+}
+
+.field input:focus,
+.field input:valid,
+.field textarea:focus,
+.field textarea:valid {
+    border-bottom-color: #2f3542;
 }
 
 .field textarea {
@@ -45,7 +52,6 @@
 
 .radio {
     display: inline-block;
-    font-size: 1.5em;
 }
 
 .radio::after {
@@ -59,12 +65,27 @@
 
 .radio label {
     padding-bottom: .1em;
+
+    transition: .2s ease-out;
 }
 
 .radio input:checked + label {
-    border-bottom: .3rem solid #000;
+    border-bottom: .3rem solid #2f3542;
 }
 
 .radio:not(:last-child) {
     margin-right: 2em;
+}
+
+input[type=color] {
+    display: block;
+
+    width: 4em;
+    height: 2em;
+    padding: .2rem .4rem;
+    
+    border: 0;
+    border-radius: .5rem;
+    background-color: #dfe4ea;
+    appearance: none;
 }
