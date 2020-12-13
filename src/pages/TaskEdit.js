@@ -17,30 +17,51 @@ const TaskEdit = () => {
 
     useEffect( () => {
         const loadData = async () => {
-            if ( !db.checkConnection() ) {
-                await db.init()
+            let resultT = {}
+            let resultCL = []
+
+            try {
+                if ( !db.checkConnection() ) {
+                    await db.init()
+                }
+
+                // do the queries in parallel
+                let resT = db.loadTask( parseInt( id ) )
+                let resCL = db.loadAllCategory()
+                resultT = await resT
+                resultCL = await resCL
+            } catch ( e ) {
+                console.error( e.message )
             }
 
-            let resultTask = await db.loadTask( parseInt( id ) )
-            let resultCL = await db.loadAllCategory()
-            setTask( resultTask )
+            setTask( resultT )
             setCategoryList( resultCL )
         }
+
+        
         loadData()
     }, [id] )
 
     const handleSubmit = async ( e, task ) => {
         e.preventDefault()
 
-        db.updateTask( task ).then( () => {
-            history.push(`/view-task/${task.id}`)
-        } ).catch( ( e ) => {
-            console.log( e.message )
-        } )
+        try {
+            await db.updateTask( task )
+            history.push( `/view-task/${task.id}` )
+        } catch ( e ) {
+            console.error( e.message )
+        }
     }
 
     const handleDelete = async ( e ) => {
         e.preventDefault()
+
+        try {
+            await db.removeTask( parseInt( id ) )
+            history.push( '/' )
+        } catch ( e ) {
+            console.error( e.message )
+        }
     }
 
     return (

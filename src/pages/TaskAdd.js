@@ -14,24 +14,31 @@ const TaskAdd = () => {
 
     useEffect( () => {
         const loadData = async () => {
-            if ( !db.checkConnection() ) {
-                await db.init()
-            }
+            let result = []
+            try {
+                if ( !db.checkConnection() ) {
+                    await db.init()
+                }
 
-            let resultCL = await db.loadAllCategory()
-            setCategoryList( resultCL )
+                result = await db.loadAllCategory()
+            } catch ( e ) {
+                console.error( e.message )
+            }
+            setCategoryList( result )
         }
+        
         loadData()
     }, [] )
 
-    const handleSubmit = ( e, task ) => {
+    const handleSubmit = async ( e, task ) => {
         e.preventDefault()
 
-        db.addTask( task ).then( () => {
-            history.push('/')
-        } ).catch( ( e ) => {
-            console.log( e.message )
-        } )
+        try {
+            let res = await db.addTask( task )
+            history.push( `/view-task/${res.id}` )
+        } catch ( e ) {
+            console.error( e.message )
+        }
     }
 
     return (

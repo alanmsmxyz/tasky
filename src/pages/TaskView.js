@@ -17,16 +17,24 @@ const TaskView = () => {
 
     useEffect( () => {
         const loadData = async () => {
-            if ( !db.checkConnection() ) {
-                await db.init()
-            }
+            let resultT = {}
+            let resultC = {}
 
-            let resultT = await db.loadTask( parseInt( id ) )
-            let resultC = await db.loadCategory( parseInt( resultT.category ) )
+            try {
+                if ( !db.checkConnection() ) {
+                    await db.init()
+                }
+
+                resultT = await db.loadTask( parseInt( id ) )
+                resultC = await db.loadCategory( parseInt( resultT.category ) )
+            } catch ( e ) {
+                console.error( e.message )
+            }
 
             setTask( resultT )
             setCategory( resultC )
         }
+        
         loadData()
     }, [id] )
 
@@ -45,7 +53,7 @@ const TaskView = () => {
                     <h2>{task.name}</h2>
                     <p>{task.description}</p>
                     <p><b>Due Date: </b>{datetime}</p>
-                    <CategoryCard {...category}/>
+                    <CategoryCard {...category} />
                 </div>
 
                 <NavigationBottom>

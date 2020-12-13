@@ -14,14 +14,20 @@ const CategoryList = () => {
     const [categoryList, setCategoryList] = useState( [] )
     useEffect( () => {
         const loadData = async () => {
-            if ( !db.checkConnection() ) {
-                await db.init()
-            }
+            let result
+            try {
+                if ( !db.checkConnection() ) {
+                    await db.init()
+                }
 
-            let result = await db.loadAllCategory()
+                result = await db.loadAllCategory()
+            } catch ( e ) {
+                console.error( e )
+            }
 
             setCategoryList( result )
         }
+        
         loadData()
     }, [] )
 
@@ -41,7 +47,7 @@ const CategoryList = () => {
                 <NavigationMinimal title="Category List" />
 
                 {categoryCards.length > 0 ? categoryCards :
-                <p>It seems you doesn't have any category yet, you can create one using the button on the bottom right of your screen.</p>}
+                    <p>It seems you doesn't have any category yet, you can create one using the button on the bottom right of your screen.</p>}
 
                 <NavigationBottom>
                     <Link to="/add-category">

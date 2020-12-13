@@ -16,28 +16,43 @@ const CategoryEdit = () => {
 
     useEffect( () => {
         const loadData = async () => {
-            if ( !db.checkConnection() ) {
-                await db.init()
+            let result = {}
+            try {
+                if ( !db.checkConnection() ) {
+                    await db.init()
+                }
+
+                result = await db.loadCategory( parseInt( id ) )
+            } catch ( e ) {
+                console.error( e.message )
             }
 
-            let result = await db.loadCategory( parseInt( id ) )
             setCategory( result )
         }
+
         loadData()
     }, [id] )
 
     const handleSubmit = async ( e, category ) => {
         e.preventDefault()
 
-        db.updateCategory( category ).then( () => {
+        try {
+            await db.updateCategory( category )
             history.push( '/category' )
-        } ).catch( ( e ) => {
-            console.log( e.message )
-        } )
+        } catch ( e ) {
+            console.error( e.message )
+        }
     }
 
     const handleDelete = async ( e ) => {
         e.preventDefault()
+
+        try {
+            await db.removeCategory( parseInt( id ) )
+            history.push( '/category' )
+        } catch ( e ) {
+            console.error( e.message )
+        }
     }
 
     return (

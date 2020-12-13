@@ -26,9 +26,8 @@ const TaskList = () => {
     
                 resultTL = await db.loadAllTask()
                 resultCL = await db.loadAllCategory()    
-
             } catch (e) {
-                console.log(e)
+                console.error(e)
             }
 
             let result = resultTL.map( task => {

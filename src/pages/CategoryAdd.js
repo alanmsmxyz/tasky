@@ -13,16 +13,17 @@ const CategoryAdd = () => {
 
     const handleSubmit = async ( e, category ) => {
         e.preventDefault()
+        
+        try {
+            if ( !db.checkConnection() ) {
+                await db.init()
+            }
 
-        if ( !db.checkConnection() ) {
-            await db.init()
+            await db.addCategory( category )
+            history.push( '/category' )
+        } catch ( e ) {
+            console.error( e.message )
         }
-
-        db.addCategory( category ).then( () => {
-            history.push('/category')
-        } ).catch( ( e ) => {
-            console.log( e.message )
-        } )
     }
 
     return (
