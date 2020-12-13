@@ -1,28 +1,39 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 
 import NavigationMinimal from '../components/NavigationMinimal'
 import NavigationBottom from '../components/NavigationBottom'
 import ActionButton from '../components/ActionButton'
+import CategoryCard from '../components/CategoryCard'
 
 import PageMeta from '../utils/PageMeta'
 
-// Using sample data for demo since IndexedDB not implemented yet
-import SampleData from '../utils/SampleData'
+import * as db from '../models/db'
 
 const TaskView = () => {
     const { id } = useParams()
+    const [task, setTask] = useState( {} )
+    const [category, setCategory] = useState( {} )
 
-    let task = SampleData.task.find( ( task ) => {
-        return task.id === parseInt( id )
+    useEffect( () => {
+        const loadData = async () => {
+            if ( !db.checkConnection() ) {
+                await db.init()
+            }
+
+            let resultT = await db.loadTask( parseInt( id ) )
+            let resultC = await db.loadCategory( parseInt( resultT.category ) )
+
+            setTask( resultT )
+            setCategory( resultC )
+        }
+        loadData()
+    }, [id] )
+
+
+    const datetime = new Date( `${task.date} ${task.time}` ).toLocaleString( undefined, {
+        weekday: 'short', year: 'numeric', month: 'long', day: 'numeric'
     } )
-
-    const category = SampleData.category.find( cat => {
-        return cat.id === task.category
-    } )
-
-    task.category_name = category.name
-    task.category_color = category.color
 
     return (
         <React.Fragment>
@@ -33,9 +44,8 @@ const TaskView = () => {
                 <div>
                     <h2>{task.name}</h2>
                     <p>{task.description}</p>
-                    <br />
-                    <p><b>Due Date: </b>{`${task.date} - ${task.time}`}</p>
-                    <p><b>Category: </b><span style={{ color: task.category_color }}>{task.category_name}</span></p>
+                    <p><b>Due Date: </b>{datetime}</p>
+                    <CategoryCard {...category}/>
                 </div>
 
                 <NavigationBottom>

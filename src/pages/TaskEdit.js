@@ -1,28 +1,54 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useParams, useHistory } from 'react-router-dom'
 
 import PageMeta from '../utils/PageMeta'
 
 import TaskForm from '../components/TaskForm'
 import NavigationMinimal from '../components/NavigationMinimal'
 
-// Using sample data for demo since IndexedDB not implemented yet
-import SampleData from '../utils/SampleData'
+import * as db from '../models/db'
 
 const TaskEdit = () => {
-    const { id } = useParams()
+    const history = useHistory()
 
-    // Gather desired data from SampleData
-    let task = SampleData.task.find( ( task ) => {
-        return task.id === parseInt( id )
-    } )
+    const { id } = useParams()
+    const [task, setTask] = useState( {} )
+    const [categoryList, setCategoryList] = useState( [] )
+
+    useEffect( () => {
+        const loadData = async () => {
+            if ( !db.checkConnection() ) {
+                await db.init()
+            }
+
+            let resultTask = await db.loadTask( parseInt( id ) )
+            let resultCL = await db.loadAllCategory()
+            setTask( resultTask )
+            setCategoryList( resultCL )
+        }
+        loadData()
+    }, [id] )
+
+    const handleSubmit = async ( e, task ) => {
+        e.preventDefault()
+
+        db.updateTask( task ).then( () => {
+            history.push(`/view-task/${task.id}`)
+        } ).catch( ( e ) => {
+            console.log( e.message )
+        } )
+    }
+
+    const handleDelete = async ( e ) => {
+        e.preventDefault()
+    }
 
     return (
         <React.Fragment>
             <PageMeta title="Edit Task | Tasky" description="Manage Your Task Easily"></PageMeta>
             <div className="content">
                 <NavigationMinimal title="Edit Task" />
-                <TaskForm mode="edit" data={task} />
+                <TaskForm task={task} categoryList={categoryList} submitHandler={handleSubmit} deleteHandler={handleDelete} showDeleteButton={true} />
             </div>
         </React.Fragment>
     )

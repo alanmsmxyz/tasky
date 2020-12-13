@@ -1,22 +1,12 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 import NavigationBottom from './NavigationBottom'
 import ActionButton from './ActionButton'
 
-import style from './TaskForm.module.css'
+import style from './Form.module.css'
 
-// Using sample data for demo since IndexedDB not implemented yet
-import SampleData from '../utils/SampleData'
-
-const initialState = {
-    'id': null,
-    'name': '',
-    'description': '',
-    'date': '',
-    'time': '',
-    'category': null
-}
-
+// create a reducer function to handle form input value change
 const reducer = ( state, { field, value } ) => {
     return {
         ...state,
@@ -24,9 +14,18 @@ const reducer = ( state, { field, value } ) => {
     }
 }
 
-const TaskForm = ( props ) => {
-    const [values, dispatch] = useReducer( reducer, props.mode === 'edit' ? props.data : initialState )
+const taskModel = {
+    'name': '',
+    'description': '',
+    'date': '',
+    'time': '',
+    'category': null,
+    'notified': false
+}
 
+const TaskForm = ( props ) => {
+    // useReducer to handle input form value
+    const [values, dispatch] = useReducer( reducer, props.task ?? taskModel )
     const onChange = ( e ) => {
         dispatch( {
             field: e.target.name,
@@ -34,53 +33,74 @@ const TaskForm = ( props ) => {
         } )
     }
 
+    useEffect( () => {
+        if ( props.task ) {
+            for ( let key in props.task ) {
+                dispatch( { field: key, value: props.task[key] } )
+            }
+        }
+    }, [props] )
+
+    // handle form submit
     const onSubmit = ( e ) => {
-        e.preventDefault()
+        const task = values
+
+        props.submitHandler( e, task )
     }
 
-    const onDelete = ( e ) => {
-        e.preventDefault()
+    // handle delete task button click
+    const onDelete = !props.showDeleteButton ? null : ( e ) => {
+        props.deleteHandler( e )
     }
 
+    const { name, description, date, time, category } = values
 
-    const { id, name, description, date, time, category } = values
+    const categoryRadios = props.categoryList.map( cat =>
+        <div className={style.radio} key={cat.id}>
+            <input id={`cat-${cat.id}`} type="radio" name="category" value={cat.id} checked={category === cat.id} onChange={onChange} required />
+            <label htmlFor={`cat-${cat.id}`} style={{ 'borderColor': cat.color }}>
+                <big>{cat.name}</big>
+            </label>
+        </div> )
 
     return (
         <form onSubmit={onSubmit} className={style.form}>
             <div className={style.field}>
-                <label htmlFor="name">Name</label>
-                <input id="name" name="name" type="text" placeholder="Put task name here..." value={name} onChange={onChange} />
+                <label htmlFor="name">
+                    <b><small>Name</small></b>
+                </label>
+                <input id="name" name="name" type="text" placeholder="Put task name here..." value={name} onChange={onChange} required />
             </div>
 
             <div className={style.field}>
-                <label htmlFor="description">Description</label>
-                <textarea id="description" name="description" placeholder="Put task description here..." onChange={onChange} rows="5" value={description} />
+                <label htmlFor="description">
+                    <b><small>Description</small></b>
+                </label>
+                <textarea id="description" name="description" placeholder="Put task description here..." onChange={onChange} rows="5" value={description} required />
             </div>
 
             <div className={style.field}>
-                <label htmlFor="date">Date</label>
-                <input id="date" name="date" type="date" placeholder="" value={date} onChange={onChange} />
+                <label htmlFor="date">
+                    <b><small>Date</small></b>
+                </label>
+                <input id="date" name="date" type="date" placeholder="" value={date} onChange={onChange} required />
             </div>
 
             <div className={style.field}>
-                <label htmlFor="time">Time</label>
-                <input id="time" name="time" type="time" placeholder="" value={time} onChange={onChange} />
+                <label htmlFor="time">
+                    <b><small>Time</small></b>
+                </label>
+                <input id="time" name="time" type="time" placeholder="" value={time} onChange={onChange} required />
             </div>
 
             <fieldset className={style.fieldset}>
-                <legend>Category</legend>
-                {
-                    SampleData.category.map( cat =>
-                        <div className={style.radio} key={cat.id}>
-                            <input id={`cat-${cat.id}`} type="radio" name="category" value={cat.id} checked={category === cat.id} onChange={onChange} />
-                            <label htmlFor={`cat-${cat.id}`} style={{ 'border-color': cat.color }}>{cat.name}</label>
-                        </div>
-                    )
-                }
+                <legend><b><small>Category</small></b></legend>
+                {props.categoryList.length > 0 ? categoryRadios :
+                <p>It seems you doesn't have any category yet, you need to create one <Link className="hyperlink" to="/category">here</Link>.</p>}
             </fieldset>
 
             <NavigationBottom>
-                {props.mode === 'edit' &&
+                {props.showDeleteButton &&
                     <button onClick={onDelete}>
                         <ActionButton
                             icon="/icons/trash.svg"

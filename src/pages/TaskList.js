@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import PageMeta from '../utils/PageMeta'
@@ -8,35 +8,49 @@ import NavigationBottom from '../components/NavigationBottom'
 import TaskCard from '../components/TaskCard'
 import ActionButton from '../components/ActionButton'
 
-// Using sample data for demo since IndexedDB not implemented yet
-import SampleData from '../utils/SampleData'
+import * as db from '../models/db'
 
 const TaskList = () => {
-    const taskList = SampleData.task.map( task => {
-        const category = SampleData.category.find( cat => {
-            return cat.id === task.category
-        } )
+    const [taskCards, setTaskCards] = useState( [] )
 
-        return {
-            ...task,
-            'category_name': category.name,
-            'category_color': category.color
-        }
-    }
-    )
+    useEffect( () => {
+        const loadData = async () => {
+            let resultTL
+            let resultCL
 
-    const taskCards = taskList.map( task =>
-        <TaskCard
-            key={task.id}
-            id={task.id}
-            name={task.name}
-            description={task.description}
-            date={task.date}
-            time={task.time}
-            categoryName={task.category_name}
-            categoryColor={task.category_color}
-        />
-    )
+            try {
+                if ( !db.checkConnection() ) {
+                    let init = await db.init()
+                    console.log(init)
+                }
+    
+                resultTL = await db.loadAllTask()
+                resultCL = await db.loadAllCategory()    
+
+            } catch (e) {
+                console.log(e)
+            }
+
+            let result = resultTL.map( task => {
+                const category = resultCL.find( cat => {
+                    return cat.id === task.category
+                } )
+
+                task.category = category
+
+                return (
+                    <Link key={task.id} to={`/view-task/${task.id}`} className="blocklink">
+                        <TaskCard
+                            {...task}
+                        />
+                    </Link>
+                )
+            } )
+            
+            setTaskCards( result )
+            }
+        loadData()
+    }, [] )
 
     return (
         <React.Fragment>
@@ -45,7 +59,8 @@ const TaskList = () => {
 
                 <NavigationMain />
 
-                {taskCards}
+                {taskCards.length > 0 ? taskCards :
+                <p>It seems you doesn't have any task yet, you can create one using the button on the bottom right of your screen.</p>}
 
                 <NavigationBottom>
                     <Link to="/add-task">
