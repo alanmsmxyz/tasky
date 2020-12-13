@@ -1,0 +1,23 @@
+.container {
+    margin-bottom: 2em;
+}
+
+.inner {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+
+.color {
+    display: block;
+    width: 1.6em;
+    height: 1.6em;
+    margin-right: 1em;
+    border-radius: .2em;
+}
+
+.name {
+    /* visual correction */
+    position: relative;
+    top: .1rem;
+}

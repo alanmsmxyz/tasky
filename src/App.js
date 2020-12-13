@@ -7,6 +7,11 @@ import TaskList from '../src/pages/TaskList'
 import TaskAdd from '../src/pages/TaskAdd'
 import TaskView from '../src/pages/TaskView'
 import TaskEdit from '../src/pages/TaskEdit'
+
+import CategoryList from '../src/pages/CategoryList'
+import CategoryAdd from '../src/pages/CategoryAdd'
+import CategoryEdit from '../src/pages/CategoryEdit'
+
 import NotFound from '../src/pages/error/NotFound'
 
 function App() {
@@ -14,10 +19,16 @@ function App() {
     <Router>
       <div className="app-container">
         <Switch>
+          
+          <Route path="/" exact component={TaskList} />
           <Route path="/add-task" component={TaskAdd} />
           <Route path="/edit-task/:id" component={TaskEdit} />
           <Route path="/view-task/:id" component={TaskView} />
-          <Route path="/" exact component={TaskList} />
+
+          <Route path="/category" component={CategoryList} />
+          <Route path="/add-category" component={CategoryAdd} />
+          <Route path="/edit-category/:id" component={CategoryEdit} />
+
           <Route path="*" component={NotFound} />
         </Switch>
       </div>
