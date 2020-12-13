@@ -9,7 +9,7 @@
     width: 3em;
     height: 3em;
 
-    border: .3rem solid #000;
+    border: .2rem solid #2f3542;
     border-radius: 50%;
 }
 
@@ -18,8 +18,4 @@
 
     width: 60%;
     height: auto;
-}
-
-.legend {
-    font-size: .8em;
 }

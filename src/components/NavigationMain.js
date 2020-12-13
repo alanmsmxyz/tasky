@@ -11,8 +11,8 @@ const NavigationMain = () => {
                     <h1>Tasky</h1>
                     <p>Here are your task list...</p>
                 </div>
-                <div className={style.hamburger}>
-                    <Link to="">
+                <div>
+                    <Link className={style.stairs} to="/category">
                         <span className={style.bar} />
                         <span className={style.bar} />
                         <span className={style.bar} />

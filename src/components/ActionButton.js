@@ -9,7 +9,7 @@ const ActionButton = ( props ) => {
                 <img src={props.icon} alt={props.legend} />
             </div>
             <div className={style.legend}>
-                {props.legend}
+                <small>{props.legend}</small>
             </div>
         </div>
     )
