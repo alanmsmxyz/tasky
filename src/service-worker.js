@@ -62,6 +62,7 @@ precacheAndRoute( [
   { url: '/logo512.png', revision: Date.now() },
   { url: '/icons/check.svg', revision: Date.now() },
   { url: '/icons/chevron-left.svg', revision: Date.now() },
+  { url: '/icons/download.svg', revision: Date.now() },
   { url: '/icons/edit.svg', revision: Date.now() },
   { url: '/icons/plus.svg', revision: Date.now() },
   { url: '/icons/trash.svg', revision: Date.now() }

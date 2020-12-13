@@ -22,6 +22,30 @@
     margin: 0;
 }
 
+.actions {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+
+.install {
+    position: relative;
+    top: 0;
+    
+    display: block;
+    width: 3.5rem;
+    margin-right: 2rem;
+
+    transition: .2s ease-out;
+}
+
+.install:hover,
+.install:focus {
+    cursor: pointer;
+
+    top: .5rem;
+}
+
 .stairs {
     /* visual correction */
     position: relative;
