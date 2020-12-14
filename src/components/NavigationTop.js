@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
-import style from './NavigationMain.module.css'
+import style from './NavigationTop.module.css'
 
-const NavigationMain = () => {
+const NavigationTop = ( props ) => {
     const [deferredPrompt, setDeferredPrompt] = useState( null )
 
     useEffect( () => {
@@ -27,16 +27,23 @@ const NavigationMain = () => {
     return (
         <nav id="main-navigation" className={style.container}>
             <div className={style.inner}>
-                <div className={style.branding}>
-                    <h1>Tasky</h1>
-                    <p>Here are your task list...</p>
+                {props.previousPage &&
+                    <Link to="/" className={style.back}>
+                        <img src="/icons/chevron-left.svg" alt="back icon" />
+                    </Link>
+                }
+
+                <div>
+                    <h1 className={style.title}>{props.title}</h1>
                 </div>
+
                 <div className={style.actions}>
                     {deferredPrompt &&
                         <button className={style.install} onClick={handleInstall}>
                             <img src='/icons/download.svg' alt="download" />
                         </button>
                     }
+
                     <Link className={style.stairs} to="/category">
                         <span className={style.bar} />
                         <span className={style.bar} />
@@ -48,4 +55,4 @@ const NavigationMain = () => {
     )
 }
 
-export default NavigationMain
+export default NavigationTop

@@ -1,25 +1,41 @@
 .container {
-    margin-bottom: 2em;
+    padding: 3rem 4rem;
+    color: #fff;
 }
 
 .inner {
+    position: relative;
+
     display: flex;
     flex-flow: row nowrap;
-    
+
     justify-content: space-between;
     align-items: center;
 }
 
-.branding h1 {
-    /* correct position to make it visually right */
+.title {
     position: relative;
-    left: -.15rem;
+    top: 0.2rem;
 
     margin: 0;
 }
 
-.branding p {
-    margin: 0;
+.back {
+    position: absolute;
+    left: -3.5rem;
+
+    display: block;
+    height: 2.3rem;
+    width: 2.3rem;
+
+    transition: 0.2s ease-out;
+}
+
+.back:hover,
+.back:focus {
+    transform: translateX(-0.5rem);
+
+    cursor: pointer;
 }
 
 .actions {
@@ -29,43 +45,41 @@
 }
 
 .install {
-    position: relative;
-    top: 0;
-    
     display: block;
-    width: 3.5rem;
-    margin-right: 2rem;
+    height: 2.8rem;
+    width: 2.8rem;
+    margin-right: 1.5rem;
 
-    transition: .2s ease-out;
+    transition: 0.2s ease-out;
 }
 
 .install:hover,
 .install:focus {
-    cursor: pointer;
+    transform: translateY(0.5rem);
 
-    top: .5rem;
+    cursor: pointer;
 }
 
 .stairs {
     /* visual correction */
     position: relative;
-    top: .5rem;
+    top: 0.5rem;
 
     display: block;
-    width: 3.5rem;
+    width: 3.2rem;
 }
 
 .bar {
     display: block;
     width: 60%;
-    height: .4rem;
-    border-radius: .4rem;
+    height: 0.4rem;
+    border-radius: 0.4rem;
 
-    margin: 0 0 .8rem auto;
+    margin: 0 0 0.8rem auto;
 
-    background: #3d1f61;
+    background: #fff;
 
-    transition: .2s ease-out;
+    transition: 0.2s ease-out;
 }
 
 .stairs:hover .bar,
