@@ -79,7 +79,7 @@ const CategoryForm = ( props ) => {
                 <button type="submit">
                     <ActionButton
                         icon="/icons/check.svg"
-                        legend="save cateogory"
+                        legend="save category"
                     />
                 </button>
             </NavigationBottom>
