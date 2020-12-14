@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import PageMeta from '../utils/PageMeta'
 
-import NavigationMinimal from '../components/NavigationMinimal'
+import NavigationTop from '../components/NavigationTop'
 import NavigationBottom from '../components/NavigationBottom'
 import CategoryCard from '../components/CategoryCard'
 import ActionButton from '../components/ActionButton'
@@ -27,7 +27,7 @@ const CategoryList = () => {
 
             setCategoryList( result )
         }
-        
+
         loadData()
     }, [] )
 
@@ -42,10 +42,9 @@ const CategoryList = () => {
     return (
         <React.Fragment>
             <PageMeta name="Manage Category | Tasky" description="Manage Your Task Easily"></PageMeta>
+            <NavigationTop title="Category List" previousPage='/' />
+
             <div className="content">
-
-                <NavigationMinimal title="Category List" />
-
                 {categoryCards.length > 0 ? categoryCards :
                     <p>It seems you doesn't have any category yet, you can create one using the button on the bottom right of your screen.</p>}
 

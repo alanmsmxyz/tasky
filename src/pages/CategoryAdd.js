@@ -1,8 +1,8 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 
+import NavigationTop from '../components/NavigationTop'
 import CategoryForm from '../components/CategoryForm'
-import NavigationMinimal from '../components/NavigationMinimal'
 
 import * as db from '../models/db'
 
@@ -29,8 +29,10 @@ const CategoryAdd = () => {
     return (
         <React.Fragment>
             <PageMeta title="Add Category | Tasky" description="Manage Your Task Easily"></PageMeta>
+        
+            <NavigationTop title="Add Category" previousPage='/category' />
+
             <div className="content">
-                <NavigationMinimal title="Add Category" />
                 <CategoryForm submitHandler={handleSubmit} />
             </div>
         </React.Fragment>

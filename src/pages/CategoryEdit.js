@@ -3,8 +3,8 @@ import { useParams, useHistory } from 'react-router-dom'
 
 import PageMeta from '../utils/PageMeta'
 
+import NavigationTop from '../components/NavigationTop'
 import CategoryForm from '../components/CategoryForm'
-import NavigationMinimal from '../components/NavigationMinimal'
 
 import * as db from '../models/db'
 
@@ -58,8 +58,10 @@ const CategoryEdit = () => {
     return (
         <React.Fragment>
             <PageMeta title="Edit Category | Tasky" description="Manage Your Task Easily"></PageMeta>
+
+            <NavigationTop title="Edit Category" previousPage='/category' />
+
             <div className="content">
-                <NavigationMinimal title="Edit Category" />
                 <CategoryForm category={category} submitHandler={handleSubmit} deleteHandler={handleDelete} showDeleteButton={true} />
             </div>
         </React.Fragment>

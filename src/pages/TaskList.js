@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import PageMeta from '../utils/PageMeta'
 
-import NavigationMain from '../components/NavigationMain'
+import NavigationTop from '../components/NavigationTop'
 import NavigationBottom from '../components/NavigationBottom'
 import TaskCard from '../components/TaskCard'
 import ActionButton from '../components/ActionButton'
@@ -54,10 +54,10 @@ const TaskList = () => {
     return (
         <React.Fragment>
             <PageMeta name="Manage Tasks | Tasky" description="Manage Your Task Easily"></PageMeta>
+
+            <NavigationTop title="Tasky" />
+
             <div className="content">
-
-                <NavigationMain />
-
                 {taskCards.length > 0 ? taskCards :
                 <p>It seems you doesn't have any task yet, you can create one using the button on the bottom right of your screen.</p>}
 
@@ -69,7 +69,6 @@ const TaskList = () => {
                         />
                     </Link>
                 </NavigationBottom>
-
             </div>
         </React.Fragment>
     )

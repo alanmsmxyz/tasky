@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import TaskForm from '../components/TaskForm'
-import NavigationMinimal from '../components/NavigationMinimal'
+import NavigationTop from '../components/NavigationTop'
 
 import * as db from '../models/db'
 
@@ -44,8 +44,10 @@ const TaskAdd = () => {
     return (
         <React.Fragment>
             <PageMeta title="Add Task | Tasky" description="Manage Your Task Easily"></PageMeta>
+    
+            <NavigationTop title="Add Task" previousPage='/' />
+            
             <div className="content">
-                <NavigationMinimal title="Add Task" />
                 <TaskForm categoryList={categoryList} submitHandler={handleSubmit} />
             </div>
         </React.Fragment>

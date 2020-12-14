@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 
-import NavigationMinimal from '../components/NavigationMinimal'
+import NavigationTop from '../components/NavigationTop'
 import NavigationBottom from '../components/NavigationBottom'
 import ActionButton from '../components/ActionButton'
 import CategoryCard from '../components/CategoryCard'
@@ -46,9 +46,10 @@ const TaskView = () => {
     return (
         <React.Fragment>
             <PageMeta title="View Task | Tasky" description="Manage Your Task Easily"></PageMeta>
-            <div className="content">
-                <NavigationMinimal title="View Task" />
 
+            <NavigationTop title="View Task" previousPage='/' />
+
+            <div className="content">
                 <div>
                     <h2>{task.name}</h2>
                     <p>{task.description}</p>

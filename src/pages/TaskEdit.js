@@ -4,7 +4,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import PageMeta from '../utils/PageMeta'
 
 import TaskForm from '../components/TaskForm'
-import NavigationMinimal from '../components/NavigationMinimal'
+import NavigationTop from '../components/NavigationTop'
 
 import * as db from '../models/db'
 
@@ -67,8 +67,10 @@ const TaskEdit = () => {
     return (
         <React.Fragment>
             <PageMeta title="Edit Task | Tasky" description="Manage Your Task Easily"></PageMeta>
+
+            <NavigationTop title="Edit Task" previousPage={`/view-task/${id}`} />
+
             <div className="content">
-                <NavigationMinimal title="Edit Task" />
                 <TaskForm task={task} categoryList={categoryList} submitHandler={handleSubmit} deleteHandler={handleDelete} showDeleteButton={true} />
             </div>
         </React.Fragment>
