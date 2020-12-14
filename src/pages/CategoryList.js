@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import PageMeta from '../utils/PageMeta'
-
-import NavigationTop from '../components/NavigationTop'
 import NavigationBottom from '../components/NavigationBottom'
 import CategoryCard from '../components/CategoryCard'
 import ActionButton from '../components/ActionButton'
@@ -11,7 +8,7 @@ import ActionButton from '../components/ActionButton'
 import * as db from '../models/db'
 
 const CategoryList = () => {
-    const [categoryList, setCategoryList] = useState( [] )
+    const [categoryCards, setCategoryCards] = useState( null )
     useEffect( () => {
         const loadData = async () => {
             let result
@@ -25,40 +22,36 @@ const CategoryList = () => {
                 console.error( e )
             }
 
-            setCategoryList( result )
+
+            result = result.map( category => {
+                return (
+                    <Link key={category.id} to={`/edit-category/${category.id}`}>
+                        <CategoryCard {...category} />
+                    </Link>
+                )
+            } )
+            
+            setCategoryCards( result )
         }
 
         loadData()
     }, [] )
 
-    const categoryCards = categoryList.map( category => {
-        return (
-            <Link to={`/edit-category/${category.id}`}>
-                <CategoryCard {...category} />
-            </Link>
-        )
-    } )
 
     return (
-        <React.Fragment>
-            <PageMeta name="Manage Category | Tasky" description="Manage Your Task Easily"></PageMeta>
-            <NavigationTop title="Category List" previousPage='/' />
+        <>
+            {categoryCards && categoryCards.length > 0 ? categoryCards :
+                <p>It seems you doesn't have any category yet, you can create one using the button on the bottom right of your screen.</p>}
 
-            <div className="content">
-                {categoryCards.length > 0 ? categoryCards :
-                    <p>It seems you doesn't have any category yet, you can create one using the button on the bottom right of your screen.</p>}
-
-                <NavigationBottom>
-                    <Link to="/add-category">
-                        <ActionButton
-                            icon="/icons/plus.svg"
-                            legend="add category"
-                        />
-                    </Link>
-                </NavigationBottom>
-
-            </div>
-        </React.Fragment>
+            <NavigationBottom>
+                <Link to="/add-category">
+                    <ActionButton
+                        icon="/icons/plus.svg"
+                        legend="add category"
+                    />
+                </Link>
+            </NavigationBottom>
+        </>
     )
 }
 

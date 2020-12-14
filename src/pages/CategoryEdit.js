@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 
-import PageMeta from '../utils/PageMeta'
-
-import NavigationTop from '../components/NavigationTop'
 import CategoryForm from '../components/CategoryForm'
 
 import * as db from '../models/db'
@@ -12,7 +9,7 @@ const CategoryEdit = () => {
     const history = useHistory()
 
     const { id } = useParams()
-    const [category, setCategory] = useState( [] )
+    const [category, setCategory] = useState( null )
 
     useEffect( () => {
         const loadData = async () => {
@@ -30,7 +27,7 @@ const CategoryEdit = () => {
             setCategory( result )
         }
 
-        loadData()
+        id && loadData()
     }, [id] )
 
     const handleSubmit = async ( e, category ) => {
@@ -56,15 +53,11 @@ const CategoryEdit = () => {
     }
 
     return (
-        <React.Fragment>
-            <PageMeta title="Edit Category | Tasky" description="Manage Your Task Easily"></PageMeta>
-
-            <NavigationTop title="Edit Category" previousPage='/category' />
-
-            <div className="content">
+        <>
+            { category &&
                 <CategoryForm category={category} submitHandler={handleSubmit} deleteHandler={handleDelete} showDeleteButton={true} />
-            </div>
-        </React.Fragment>
+            }
+        </>
     )
 }
 

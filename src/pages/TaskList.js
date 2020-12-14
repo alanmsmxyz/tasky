@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import PageMeta from '../utils/PageMeta'
-
-import NavigationTop from '../components/NavigationTop'
 import NavigationBottom from '../components/NavigationBottom'
 import TaskCard from '../components/TaskCard'
 import ActionButton from '../components/ActionButton'
@@ -11,7 +8,7 @@ import ActionButton from '../components/ActionButton'
 import * as db from '../models/db'
 
 const TaskList = () => {
-    const [taskCards, setTaskCards] = useState( [] )
+    const [taskCards, setTaskCards] = useState( null )
 
     useEffect( () => {
         const loadData = async () => {
@@ -21,13 +18,13 @@ const TaskList = () => {
             try {
                 if ( !db.checkConnection() ) {
                     let init = await db.init()
-                    console.log(init)
+                    console.log( init )
                 }
-    
+
                 resultTL = await db.loadAllTask()
-                resultCL = await db.loadAllCategory()    
-            } catch (e) {
-                console.error(e)
+                resultCL = await db.loadAllCategory()
+            } catch ( e ) {
+                console.error( e )
             }
 
             let result = resultTL.map( task => {
@@ -36,6 +33,10 @@ const TaskList = () => {
                 } )
 
                 task.category = category
+                task.datetime = new Date( `${task.date} ${task.time}` ).toLocaleTimeString( undefined, {
+                    year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                } )
+    
 
                 return (
                     <Link key={task.id} to={`/view-task/${task.id}`} className="blocklink">
@@ -45,32 +46,27 @@ const TaskList = () => {
                     </Link>
                 )
             } )
-            
+
             setTaskCards( result )
-            }
+        }
         loadData()
     }, [] )
 
     return (
-        <React.Fragment>
-            <PageMeta name="Manage Tasks | Tasky" description="Manage Your Task Easily"></PageMeta>
+        <>
+            {taskCards && taskCards.length > 0 ? taskCards :
+                <p>It seems you doesn't have any task yet, you can create one using the button on the bottom right of your screen.</p>
+            }
 
-            <NavigationTop title="Tasky" />
-
-            <div className="content">
-                {taskCards.length > 0 ? taskCards :
-                <p>It seems you doesn't have any task yet, you can create one using the button on the bottom right of your screen.</p>}
-
-                <NavigationBottom>
-                    <Link to="/add-task">
-                        <ActionButton
-                            icon="/icons/plus.svg"
-                            legend="add task"
-                        />
-                    </Link>
-                </NavigationBottom>
-            </div>
-        </React.Fragment>
+            <NavigationBottom>
+                <Link to="/add-task">
+                    <ActionButton
+                        icon="/icons/plus.svg"
+                        legend="add task"
+                    />
+                </Link>
+            </NavigationBottom>
+        </>
     )
 }
 

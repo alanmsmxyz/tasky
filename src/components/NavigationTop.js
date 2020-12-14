@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
 
 import style from './NavigationTop.module.css'
 
 const NavigationTop = ( props ) => {
+    const history = useHistory()
     const [deferredPrompt, setDeferredPrompt] = useState( null )
+    const [showBackButton, setShowBackButton] = useState( false )
 
     useEffect( () => {
         if ( !navigator.standalone && !window.matchMedia( '(display-mode: standalone)' ).matches ) {
@@ -20,6 +22,10 @@ const NavigationTop = ( props ) => {
         }
     }, [deferredPrompt] )
 
+    useEffect( () => {
+        setShowBackButton( history.location.pathname !== '/' )
+    }, [history.location.pathname] )
+
     const handleInstall = () => {
         deferredPrompt.prompt()
     }
@@ -27,10 +33,10 @@ const NavigationTop = ( props ) => {
     return (
         <nav id="main-navigation" className={style.container}>
             <div className={style.inner}>
-                {props.previousPage &&
-                    <Link to="/" className={style.back}>
+                {showBackButton &&
+                    <button onClick={() => history.goBack()} className={style.back}>
                         <img src="/icons/chevron-left.svg" alt="back icon" />
-                    </Link>
+                    </button>
                 }
 
                 <div>
@@ -44,11 +50,11 @@ const NavigationTop = ( props ) => {
                         </button>
                     }
 
-                    <Link className={style.stairs} to="/category">
+                    <button className={style.stairs} onClick={() => history.location.pathname !== '/category' ? history.push('/category') : null}>
                         <span className={style.bar} />
                         <span className={style.bar} />
                         <span className={style.bar} />
-                    </Link>
+                    </button>
                 </div>
             </div>
         </nav>

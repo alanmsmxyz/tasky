@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import TaskForm from '../components/TaskForm'
-import NavigationTop from '../components/NavigationTop'
 
 import * as db from '../models/db'
 
-import PageMeta from '../utils/PageMeta'
-
 const TaskAdd = () => {
     const history = useHistory()
-    const [categoryList, setCategoryList] = useState( [] )
+    const [categoryList, setCategoryList] = useState( null )
 
     useEffect( () => {
         const loadData = async () => {
@@ -26,7 +23,7 @@ const TaskAdd = () => {
             }
             setCategoryList( result )
         }
-        
+
         loadData()
     }, [] )
 
@@ -42,15 +39,11 @@ const TaskAdd = () => {
     }
 
     return (
-        <React.Fragment>
-            <PageMeta title="Add Task | Tasky" description="Manage Your Task Easily"></PageMeta>
-    
-            <NavigationTop title="Add Task" previousPage='/' />
-            
-            <div className="content">
+        <>
+            { categoryList &&
                 <TaskForm categoryList={categoryList} submitHandler={handleSubmit} />
-            </div>
-        </React.Fragment>
+            }
+        </>
     )
 }
 
