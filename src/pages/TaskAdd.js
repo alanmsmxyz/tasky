@@ -32,7 +32,7 @@ const TaskAdd = () => {
 
         try {
             let res = await db.addTask( task )
-            history.push( `/view-task/${res.id}` )
+            history.push( `/view-task/${res}` )
         } catch ( e ) {
             console.error( e.message )
         }
