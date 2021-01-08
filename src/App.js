@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { matchPath } from 'react-router'
 import { Route, Switch, useLocation } from 'react-router-dom'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
@@ -21,24 +21,32 @@ import NotFound from '../src/pages/error/NotFound'
 import NavigationTop from '../src/components/NavigationTop'
 
 const routes = [
-    { path: '/', title: 'Manage Tasks', Component: TaskList },
-    { path: '/add-task', title: 'Add Task', Component: TaskAdd },
-    { path: '/view-task/:id', title: 'View Task', Component: TaskView },
-    { path: '/edit-task/:id', title: 'Edit Task', Component: TaskEdit },
+    { path: '/', title: 'Manage Tasks', Component: TaskList, prevPage: null },
+    { path: '/add-task', title: 'Add Task', Component: TaskAdd, prevPage: '/' },
+    { path: '/view-task/:id', title: 'View Task', Component: TaskView, prevPage: '/' },
+    { path: '/edit-task/:id', title: 'Edit Task', Component: TaskEdit, prevPage: '/view-task' },
 
-    { path: '/category', title: 'Manage Category', Component: CategoryList },
-    { path: '/add-category', title: 'Add Category', Component: CategoryAdd },
-    { path: '/edit-category/:id', title: 'Edit Category', Component: CategoryEdit },
+    { path: '/category', title: 'Manage Category', Component: CategoryList, prevPage: '/' },
+    { path: '/add-category', title: 'Add Category', Component: CategoryAdd, prevPage: '/category' },
+    { path: '/edit-category/:id', title: 'Edit Category', Component: CategoryEdit, prevPage: '/category' },
 
-    { path: '*', title: 'Manage Tasks', Component: NotFound }
+    { path: '*', title: 'Error', Component: NotFound, prevPage: null }
 ]
-
 
 const App = () => {
     const location = useLocation()
-    const [title, setTitle] = useState( 'Tasky' )
+    const entryRoute = routes.find( route => {
+        let result = matchPath( location.pathname, {
+            path: route.path,
+            exact: true,
+            strict: true
+        } )
 
-    useEffect( () => {
+        return result && result.isExact
+    } )
+    const [route, setRoute] = useState(entryRoute)
+
+    useLayoutEffect( () => {
         const route = routes.find( route => {
             let result = matchPath( location.pathname, {
                 path: route.path,
@@ -46,11 +54,10 @@ const App = () => {
                 strict: true
             } )
 
-            console.log( result)
             return result && result.isExact
         } )
 
-        route && setTitle( route.title )
+        setRoute( route )
     }, [location.pathname] )
 
     const pages = routes.map( ( { path, Component } ) => (
@@ -59,21 +66,19 @@ const App = () => {
         </Route>
     ) )
 
-    console.log(pages)
-
     return (
         <>
             <Helmet>
-                <title>{title}</title>
+                <title>{route.title}</title>
             </Helmet>
 
             <div className="app-container">
-                <NavigationTop title={title} />
+                <NavigationTop title={route.title} prevPage={route.prevPage} />
                 <div className="page">
                     <TransitionGroup>
                         <CSSTransition
                             key={location.key}
-                            timeout={500}
+                            timeout={300}
                             classNames="content"
                         >
                             <div className="content">
