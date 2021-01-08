@@ -3,7 +3,7 @@ let db
 const init = () => {
     return new Promise( ( resolve, reject ) => {
         // Let us open our database
-        const DBOpenRequest = indexedDB.open( "tasky", 4 )
+        const DBOpenRequest = indexedDB.open( "tasky", 2 )
 
         // these two event handlers act on the database being opened successfully, or not
         DBOpenRequest.onerror = () => reject( 'Error loading database' )
@@ -36,6 +36,7 @@ const init = () => {
             categoryList.createIndex( "id", "id", { unique: true } )
             categoryList.createIndex( "name", "name", { unique: false } )
             categoryList.createIndex( "color", "color", { unique: false } )
+            categoryList.createIndex( "isActive", "isActive", { unique: false } )
 
             db.onsuccess = () => resolve( 'Database upgraded' )
         }
@@ -91,12 +92,16 @@ const removeTask = ( id ) => {
     } )
 }
 
-const loadAllCategory = () => {
+const loadAllCategory = ( hideDisabled = true ) => {
     return new Promise( ( resolve, reject ) => {
         let request = db.transaction( 'categoryList' ).objectStore( 'categoryList' ).getAll()
 
         request.onerror = ( e ) => reject( 'Transaction error: ' + e.target.error )
-        request.onsuccess = ( e ) => resolve( e.target.result )
+        request.onsuccess = ( e ) => {
+            let result = hideDisabled ? e.target.result.filter( cat => cat.isActive ) : e.target.result
+
+            resolve( result )
+        }
     } )
 }
 
@@ -109,18 +114,28 @@ const loadCategory = ( id ) => {
     } )
 }
 
-const addCategory = ( task ) => {
+const addCategory = ( category ) => {
     return new Promise( ( resolve, reject ) => {
-        let request = db.transaction( 'categoryList', 'readwrite' ).objectStore( 'categoryList' ).add( task )
+        let request = db.transaction( 'categoryList', 'readwrite' ).objectStore( 'categoryList' ).add( category )
 
         request.onerror = ( e ) => reject( 'Transaction error: ' + e.target.error )
         request.onsuccess = ( e ) => resolve( e.target.result )
     } )
 }
 
-const updateCategory = ( task ) => {
+const updateCategory = ( category ) => {
     return new Promise( ( resolve, reject ) => {
-        let request = db.transaction( 'categoryList', 'readwrite' ).objectStore( 'categoryList' ).put( task )
+        let request = db.transaction( 'categoryList', 'readwrite' ).objectStore( 'categoryList' ).put( category )
+
+        request.onerror = ( e ) => reject( 'Transaction error: ' + e.target.error )
+        request.onsuccess = ( e ) => resolve( e.target.result )
+    } )
+}
+
+const disableCategory = ( category ) => {
+    return new Promise( ( resolve, reject ) => {
+        let disabledCategory = { ...category, isActive: false }
+        let request = db.transaction( 'categoryList', 'readwrite' ).objectStore( 'categoryList' ).put( disabledCategory )
 
         request.onerror = ( e ) => reject( 'Transaction error: ' + e.target.error )
         request.onsuccess = ( e ) => resolve( e.target.result )
@@ -136,4 +151,4 @@ const removeCategory = ( id ) => {
     } )
 }
 
-export { init, checkConnection, loadAllTask, loadTask, addTask, updateTask, removeTask, loadAllCategory, loadCategory, addCategory, updateCategory, removeCategory }
+export { init, checkConnection, loadAllTask, loadTask, addTask, updateTask, removeTask, loadAllCategory, loadCategory, addCategory, updateCategory, disableCategory, removeCategory }

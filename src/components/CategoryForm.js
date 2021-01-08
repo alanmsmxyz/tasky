@@ -16,6 +16,7 @@ const reducer = ( state, { field, value } ) => {
 const categoryModel = {
     'name': '',
     'color': '#000000',
+    'isActive': true
 }
 
 const CategoryForm = ( props ) => {

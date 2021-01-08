@@ -22,7 +22,7 @@ const TaskList = () => {
                 }
 
                 resultTL = await db.loadAllTask()
-                resultCL = await db.loadAllCategory()
+                resultCL = await db.loadAllCategory( false )
             } catch ( e ) {
                 console.error( e )
             }
@@ -36,7 +36,7 @@ const TaskList = () => {
                 task.datetime = new Date( `${task.date} ${task.time}` ).toLocaleTimeString( undefined, {
                     year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
                 } )
-    
+
 
                 return (
                     <Link key={task.id} to={`/view-task/${task.id}`} className="blocklink">

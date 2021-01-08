@@ -45,7 +45,7 @@ const CategoryEdit = () => {
         e.preventDefault()
 
         try {
-            await db.removeCategory( parseInt( id ) )
+            await db.disableCategory( category )
             history.push( '/category' )
         } catch ( e ) {
             console.error( e.message )
